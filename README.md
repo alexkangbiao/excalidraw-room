@@ -1,3 +1,3 @@
-# Excalidraw Portal
+# Fork form Excalidraw Portal
 
-Collaboration server for Excalidraw
+Collaboration server for ExcalidrawTest
