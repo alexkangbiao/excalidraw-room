@@ -9,7 +9,7 @@ import MongoDB from './models/MongoDB';
 config();
 
 // for connect to mongo database
-// MongoDB.connect();
+MongoDB.connect();
 
 var fs = require('fs');
 

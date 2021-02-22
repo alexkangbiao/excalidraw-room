@@ -17,14 +17,14 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p ./",
     "format": "yarn prettier --write",
     "lint": "yarn prettier --list-different",
     "prettier": "prettier \"**/*.{ts,md,json,yaml,yml}\"",
-    "start": "tsc && node dist/index.js",
+    "start": "tsc -p ./ && node dist/index.js",
     "start:dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "testlint": "yarn lint",
-    "test": "jest",
+    "test": "jest ./src",
     "deploy": "cross-env NODE_ENV=prod && node ./deployment/deploy"
   },
   "version": "1.0.0",
