@@ -25,6 +25,7 @@
     "start:dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "testlint": "yarn lint",
     "test": "jest ./src",
+    "test:watch": "jest --watch ./src",
     "deploy": "cross-env NODE_ENV=prod && node ./deployment/deploy"
   },
   "version": "1.0.0",
@@ -37,15 +38,15 @@
     "@types/mongoose": "5.7.32",
     "@types/node": "14.0.24",
     "@types/socket.io": "2.1.10",
-    "jest": "24.9.0",
-    "nodemon": "2.0.4",
-    "ts-jest": "25.0.0",
-    "ts-node": "8.10.2",
-    "typescript": "3.9.7",
     "chalk": "4.1.0",
     "cross-env": "7.0.3",
+    "jest": "24.9.0",
+    "nodemon": "2.0.4",
     "ora": "5.3.0",
     "scp2": "0.5.0",
-    "ssh2": "0.8.9"
+    "ssh2": "0.8.9",
+    "ts-jest": "25.0.0",
+    "ts-node": "8.10.2",
+    "typescript": "3.9.7"
   }
 }

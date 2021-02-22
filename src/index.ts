@@ -5,6 +5,8 @@ import socketIO from "socket.io";
 import bodyParser from 'body-parser';
 import { config } from 'dotenv';
 import MongoDB from './models/MongoDB';
+import WhiteboardController, { IWhiteboardData, IWhiteboardPayload } from "./controllers/WhiteboardController";
+import { Status } from "./controllers/common";
 
 config();
 
@@ -37,34 +39,41 @@ app.get("/", (req, res) => {
 
 
 // app.post(
-// 	'/api/login',
+// 	'/api/data/save-data',
 // 	async (req: Request, res: Response): Promise<void> => {
-		// const user: IUser = req.body;
-		// const payload: IUserPayload = await UserController.createUser(user);
-		// if (payload.status == Status.ACCOUNT_NOT_FOUND) {
-		// 	const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET);
-		// 	res.json({ accessToken, user });
-		// } else if (payload.status == Status.ACCOUNT_FOUND && payload.user) {
-		// 	const match = await compare(user.password, payload.user.password);
-		// 	if (match) {
-		// 		const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET);
-		// 		res.json({ authorization: accessToken, user });
-		// 	} else
-		// 		res.json({
-		// 			message: 'Wrong password',
-		// 		});
-		// } else if (payload.status == Status.ERROR)
-		// 	res.json({
-		// 		message: 'Error',
-		// 	});
+// 		const whiteboard: IWhiteboardData = req.body;
+// 		const payload: IWhiteboardPayload = await WhiteboardController.createWhiteboard(whiteboard);
+// 		if (payload.status == Status.DATA_NOT_FOUND || (payload.status == Status.DATA_FOUND && payload.whiteboard)) {
+// 			res.json({
+//         message: payload.whiteboard,
+// 			});
+// 		} else if (payload.status == Status.ERROR)
+// 			res.json({
+// 				message: 'Error',
+// 			});
 // 	}
 // );
 
-// app.get('*', (req: Request, res: Response): void => {
-// 	res.sendFile(path.resolve('client', 'build', 'index.html'));
+// app.get(
+//   '/api/data/get-data', 
+//   async (req: Request, res: Response): Promise<void> => {
+//     const id = req.body.id;
+//     const payload: IWhiteboardPayload = await WhiteboardController.findWhiteboard(id);
+//     if (payload.status == Status.DATA_FOUND && payload.whiteboard) {
+//       res.json({
+//         message: payload.whiteboard,
+//       });
+//     } else if (payload.status == Status.DATA_NOT_FOUND){
+//       res.json({
+//         message: Status.DATA_NOT_FOUND,
+//       });
+//     } else if (payload.status == Status.ERROR)
+//       res.json({
+//         message: 'Error',
+//       });
 // });
 
-app.get("/version", (req, res) => {
+app.get("/version", (req: Request, res: Response): void => {
 	res.send("Version: 1.0 !");
 });
 
@@ -147,5 +156,5 @@ io.on("connection", (socket) => {
 
 
 
-
+// module.exports = app;
 

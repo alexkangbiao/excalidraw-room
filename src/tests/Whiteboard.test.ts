@@ -1,5 +1,5 @@
+import { Status } from '../controllers/common';
 import WhiteboardController, {
-	Status,
 	IWhiteboardPayload,
 } from '../controllers/WhiteboardController';
 import MongoDB from '../models/MongoDB';
@@ -12,9 +12,9 @@ test('Creating a Whiteboard', async (): Promise<void> => {
 		data: 'testpass',
 	});
 
-	if (payload.status == Status.DATA_NOT_FOUND && payload.Whiteboard) {
-		expect(payload.Whiteboard.id).toBe('DATAtestmail123@testmail.com');
-		expect(payload.Whiteboard.data).toBe('testpass');
+	if (payload.status == Status.DATA_NOT_FOUND && payload.whiteboard) {
+		expect(payload.whiteboard.id).toBe('DATAtestmail123@testmail.com');
+		expect(payload.whiteboard.data).toBe('testpass');
 	}
 });
 

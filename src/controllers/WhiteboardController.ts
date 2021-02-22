@@ -1,15 +1,8 @@
 import Whiteboard, { IWhiteboard } from '../models/Whiteboard';
-
-export enum Status {
-	DATA_FOUND = 'DATA_FOUND',
-	DATA_NOT_FOUND = 'DATA_NOT_FOUND',
-	DATA_UPDATED = 'DATA_UPDATED',
-	DATA_DELETED = 'DATA_DELETED',
-	ERROR = 'ERROR',
-}
+import { Status } from './common';
 
 export interface IWhiteboardPayload {
-	Whiteboard: IWhiteboard | null;
+	whiteboard: IWhiteboard | null;
 	status: Status;
 }
 
@@ -41,10 +34,11 @@ export default class WhiteboardController {
 			newWhiteboard.data = data.data;
 			newWhiteboard.insertTime = new Date();
 			newWhiteboard.updateTime = new Date();
+			status = Status.DATA_FOUND;
 			await newWhiteboard.save();
 		}
 
-		return { Whiteboard: newWhiteboard, status };
+		return { whiteboard: newWhiteboard, status };
 	}
 
 	static async findWhiteboard(id: string): Promise<IWhiteboardPayload> {
@@ -62,7 +56,7 @@ export default class WhiteboardController {
 			}
 		);
 
-		return { Whiteboard: foundWhiteboard, status };
+		return { whiteboard: foundWhiteboard, status };
 	}
 
 	static async updateWhiteboard(
@@ -82,7 +76,7 @@ export default class WhiteboardController {
 				else status = Status.DATA_NOT_FOUND;
 			}
 		);
-		return { Whiteboard: newWhiteboard, status };
+		return { whiteboard: newWhiteboard, status };
 	}
 
 	static async deleteWhiteboard(id: string): Promise<IWhiteboardPayload> {
@@ -102,6 +96,6 @@ export default class WhiteboardController {
 					status = Status.DATA_NOT_FOUND;
 			}
 		);
-		return { Whiteboard: deletedWhiteboard, status };
+		return { whiteboard: deletedWhiteboard, status };
 	}
 }
