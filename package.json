@@ -6,7 +6,9 @@
     "@types/node": "14.14.28",
     "@types/socket.io": "2.1.4",
     "debug": "4.3.1",
+    "dotenv": "8.2.0",
     "express": "4.17.1",
+    "mongoose": "5.11.17",
     "prettier": "2.2.1",
     "socket.io": "2.3.0",
     "ts-node-dev": "1.1.1",
@@ -19,9 +21,31 @@
     "format": "yarn prettier --write",
     "lint": "yarn prettier --list-different",
     "prettier": "prettier \"**/*.{ts,md,json,yaml,yml}\"",
-    "start": "node dist/index.js",
+    "start": "tsc && node dist/index.js",
     "start:dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "test": "yarn lint"
+    "testlint": "yarn lint",
+    "test": "jest",
+    "deploy": "cross-env NODE_ENV=prod && node ./deployment/deploy"
   },
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "devDependencies": {
+    "@types/bcrypt": "3.0.0",
+    "@types/cors": "2.8.6",
+    "@types/express": "4.17.7",
+    "@types/jest": "24.9.1",
+    "@types/jsonwebtoken": "8.5.0",
+    "@types/mongoose": "5.7.32",
+    "@types/node": "14.0.24",
+    "@types/socket.io": "2.1.10",
+    "jest": "24.9.0",
+    "nodemon": "2.0.4",
+    "ts-jest": "25.0.0",
+    "ts-node": "8.10.2",
+    "typescript": "3.9.7",
+    "chalk": "4.1.0",
+    "cross-env": "7.0.3",
+    "ora": "5.3.0",
+    "scp2": "0.5.0",
+    "ssh2": "0.8.9"
+  }
 }

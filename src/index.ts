@@ -1,22 +1,75 @@
 import debug from "debug";
-import express from "express";
-import http from "http";
+import express, { Application, Request, Response, NextFunction } from "express";
+import https from "https";
 import socketIO from "socket.io";
+import bodyParser from 'body-parser';
+import { config } from 'dotenv';
+import MongoDB from './models/MongoDB';
+
+config();
+
+// for connect to mongo database
+// MongoDB.connect();
+
+var fs = require('fs');
+
+var privateKey  = fs.readFileSync('crt/private.pem', 'utf8');
+var certificate = fs.readFileSync('crt/file.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
 const serverDebug = debug("server");
 const ioDebug = debug("io");
 const socketDebug = debug("socket");
 
-const app = express();
-const port = process.env.PORT || 80; // default port to listen
+const app: Application = express();
+const port = process.env.PORT || 8101; // default port to listen
 
-app.use(express.static("public"));
+// app.use(express.static('client/build'));
+// app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+// app.use(bodyParser.raw());
 
 app.get("/", (req, res) => {
-  res.send("Excalidraw collaboration server is up :)");
+  res.send("ExcalidrawTest collaboration server is up :)");
 });
 
-const server = http.createServer(app);
+
+
+// app.post(
+// 	'/api/login',
+// 	async (req: Request, res: Response): Promise<void> => {
+		// const user: IUser = req.body;
+		// const payload: IUserPayload = await UserController.createUser(user);
+		// if (payload.status == Status.ACCOUNT_NOT_FOUND) {
+		// 	const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET);
+		// 	res.json({ accessToken, user });
+		// } else if (payload.status == Status.ACCOUNT_FOUND && payload.user) {
+		// 	const match = await compare(user.password, payload.user.password);
+		// 	if (match) {
+		// 		const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET);
+		// 		res.json({ authorization: accessToken, user });
+		// 	} else
+		// 		res.json({
+		// 			message: 'Wrong password',
+		// 		});
+		// } else if (payload.status == Status.ERROR)
+		// 	res.json({
+		// 		message: 'Error',
+		// 	});
+// 	}
+// );
+
+// app.get('*', (req: Request, res: Response): void => {
+// 	res.sendFile(path.resolve('client', 'build', 'index.html'));
+// });
+
+app.get("/version", (req, res) => {
+	res.send("Version: 1.0 !");
+});
+
+// const server = http.createServer(app);
+const server = https.createServer(credentials, app);
 
 server.listen(port, () => {
   serverDebug(`listening on port: ${port}`);
@@ -24,10 +77,10 @@ server.listen(port, () => {
 
 const io = socketIO(server, {
   handlePreflightRequest: function (req, res) {
-    const headers = {
+    var headers = {
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
       "Access-Control-Allow-Origin":
-        (req.header && req.header.origin) || "https://excalidraw.com",
+        (req.header && req.header.origin) || "https://chinapandi.com",
       "Access-Control-Allow-Credentials": true,
     };
     res.writeHead(200, headers);
@@ -37,6 +90,7 @@ const io = socketIO(server, {
 
 io.on("connection", (socket) => {
   ioDebug("connection established!");
+
   io.to(`${socket.id}`).emit("init-room");
   socket.on("join-room", (roomID) => {
     socketDebug(`${socket.id} has joined ${roomID}`);
@@ -85,4 +139,13 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     socket.removeAllListeners();
   });
+
+  // for media (Video and Audio)
+  // when a new user join room
+ 
 });
+
+
+
+
+
