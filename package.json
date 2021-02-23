@@ -25,6 +25,8 @@
     "start:dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "testlint": "yarn lint",
     "test": "jest ./src",
+    "test:help": "jest --help",
+    "test:debug": "jest --debug",
     "test:watch": "jest --watch ./src",
     "deploy": "cross-env NODE_ENV=prod && node ./deployment/deploy"
   },

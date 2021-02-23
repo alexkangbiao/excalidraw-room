@@ -27,7 +27,16 @@ const app: Application = express();
 const port = process.env.PORT || 8101; // default port to listen
 
 // app.use(express.static('client/build'));
-// app.use(cors());
+const allowCrossDomain =  (req: Request, res: Response, next: any) => {
+  res.header('Access-Control-Allow-Origin', 'https://chinapandi.com');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Credentials','true');
+  next();
+};
+
+app.use(allowCrossDomain);
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // app.use(bodyParser.raw());
@@ -38,40 +47,59 @@ app.get("/", (req, res) => {
 
 
 
-// app.post(
-// 	'/api/data/save-data',
-// 	async (req: Request, res: Response): Promise<void> => {
-// 		const whiteboard: IWhiteboardData = req.body;
-// 		const payload: IWhiteboardPayload = await WhiteboardController.createWhiteboard(whiteboard);
-// 		if (payload.status == Status.DATA_NOT_FOUND || (payload.status == Status.DATA_FOUND && payload.whiteboard)) {
-// 			res.json({
-//         message: payload.whiteboard,
-// 			});
-// 		} else if (payload.status == Status.ERROR)
-// 			res.json({
-// 				message: 'Error',
-// 			});
-// 	}
-// );
+app.post(
+	'/api/data/save-data',
+	async (req: Request, res: Response): Promise<void> => {
+		const whiteboard: IWhiteboardData = req.body;
+		const payload: IWhiteboardPayload = await WhiteboardController.createWhiteboard(whiteboard);
+		if (payload.status == Status.DATA_NOT_FOUND || (payload.status == Status.DATA_FOUND && payload.whiteboard)) {
+			res.json({
+        message: payload.whiteboard,
+			});
+		} else if (payload.status == Status.ERROR)
+			res.json({
+				message: 'Error',
+			});
+	}
+);
 
-// app.get(
-//   '/api/data/get-data', 
-//   async (req: Request, res: Response): Promise<void> => {
-//     const id = req.body.id;
-//     const payload: IWhiteboardPayload = await WhiteboardController.findWhiteboard(id);
-//     if (payload.status == Status.DATA_FOUND && payload.whiteboard) {
-//       res.json({
-//         message: payload.whiteboard,
-//       });
-//     } else if (payload.status == Status.DATA_NOT_FOUND){
-//       res.json({
-//         message: Status.DATA_NOT_FOUND,
-//       });
-//     } else if (payload.status == Status.ERROR)
-//       res.json({
-//         message: 'Error',
-//       });
-// });
+app.post(
+  '/api/data/get-data', 
+  async (req: Request, res: Response): Promise<void> => {
+    const id = req.body.id;
+    const payload: IWhiteboardPayload = await WhiteboardController.findWhiteboard(id);
+    if (payload.status == Status.DATA_FOUND && payload.whiteboard) {
+      res.json({
+        message: payload.whiteboard,
+      });
+    } else if (payload.status == Status.DATA_NOT_FOUND){
+      res.json({
+        message: Status.DATA_NOT_FOUND,
+      });
+    } else if (payload.status == Status.ERROR)
+      res.json({
+        message: 'Error',
+      });
+});
+
+app.post(
+  '/api/data/delete-data', 
+  async (req: Request, res: Response): Promise<void> => {
+    const id = req.body.id;
+    const payload: IWhiteboardPayload = await WhiteboardController.deleteWhiteboard(id);
+    if (payload.status == Status.DATA_DELETED && payload.whiteboard) {
+      res.json({
+        message: payload.whiteboard,
+      });
+    } else if (payload.status == Status.DATA_NOT_FOUND){
+      res.json({
+        message: Status.DATA_NOT_FOUND,
+      });
+    } else if (payload.status == Status.ERROR)
+      res.json({
+        message: 'Error',
+      });
+});
 
 app.get("/version", (req: Request, res: Response): void => {
 	res.send("Version: 1.0 !");

@@ -91,7 +91,6 @@ export default class WhiteboardController {
 					status = Status.ERROR;
 				if (whiteboard)
 					deletedWhiteboard = whiteboard;
-
 				else
 					status = Status.DATA_NOT_FOUND;
 			}
